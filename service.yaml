@@ -1,0 +1,15 @@
+apiVersion: v1
+
+kind: Service
+metadata:
+  name: frontend-svc
+  labels:
+    run: frontend-svc
+spec:
+  selector:
+    app: frontend-svc
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
