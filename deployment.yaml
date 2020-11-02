@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: frontend-svc
+  labels:
+    app: frontend-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-svc
+  template:
+    metadata:
+      labels:
+        app: frontend-svc
+    spec:
+      containers:
+      - name: udagram-image-frontend
+        image: fgaviria/udagram-image-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          requests: { memory: 10Mi, cpu: "0.1" }
+          limits: { memory: 128Mi, cpu: "0.5" }
+        env:
+          - name: FORCE_DEPLOY
+            value: "1"
+        livenessProbe:
+          httpGet:
+            path: "/"
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 60
+        readinessProbe:
+          httpGet:
+            path: "/"
+            port: 80
+          initialDelaySeconds: 3
